@@ -115,8 +115,9 @@ export const login = async (
     }
 
     const token = generateJWT(user.id);
+    const authCookie = config.AUTH_COOKIE!;
 
-    res.cookie('token', token, {
+    res.cookie(authCookie, token, {
       httpOnly: true,
       secure: config.NODE_ENV === 'production',
       sameSite: 'strict',
@@ -134,6 +135,30 @@ export const login = async (
         role: user.role,
         is_verified: user.is_verified,
       },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const logout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  if (!req.user) {
+    return next(errorHandler(401, 'Unauthorized user'));
+  }
+  try {
+    res.clearCookie(config.AUTH_COOKIE!, {
+      httpOnly: true,
+      secure: config.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Logout successful',
     });
   } catch (error) {
     next(error);

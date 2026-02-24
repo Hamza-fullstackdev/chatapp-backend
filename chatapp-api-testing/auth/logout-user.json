@@ -1,9 +1,9 @@
 {
-  "name": "login-user",
-  "rank": "av",
+  "name": "logout-user",
+  "rank": "aw",
   "request": {
     "type": "http",
-    "url": "http://localhost:5000/api/v1/auth/login",
+    "url": "http://localhost:5000/api/v1/auth/logout",
     "scripts": {
       "preRequest": "",
       "postResponse": ""
@@ -11,8 +11,8 @@
     "method": "POST",
     "queryParams": [],
     "headers": [],
-    "body": "{\n  \"email\": \"devhamza217@gmail.com\",\n  \"password\":\"12345678\"\n}",
-    "contentType": "application/json",
+    "body": "",
+    "contentType": "text/plain",
     "auth": {
       "currentAuthType": "INHERIT",
       "authConfigStore": {}

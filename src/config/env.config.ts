@@ -6,6 +6,7 @@ const _config = {
   UI_BASE_URL: process.env.UI_BASE_URL,
   NODE_ENV: process.env.NODE_ENV,
   PORT: process.env.PORT,
+  AUTH_COOKIE: process.env.AUTH_COOKIE,
   DB_HOST: process.env.DB_HOST,
   DB_PORT: Number(process.env.DB_PORT),
   DB_USER: process.env.DB_USER,
