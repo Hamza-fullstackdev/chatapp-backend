@@ -170,6 +170,56 @@ export const logout = async (
   }
 };
 
+export const verifyEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  const rawToken = Array.isArray(req.query.token)
+    ? req.query.token[0]
+    : req.query.token;
+  const rawEmail = Array.isArray(req.query.email)
+    ? req.query.email[0]
+    : req.query.email;
+
+  const token = typeof rawToken === 'string' ? rawToken : undefined;
+  const email = typeof rawEmail === 'string' ? rawEmail : undefined;
+
+  if (!token || !email) {
+    return next(errorHandler(400, 'Token and email are required'));
+  }
+
+  try {
+    const isUserExists = await db.query(
+      'SELECT * FROM users WHERE email = $1 AND verify_token = $2',
+      [email, token],
+    );
+    if (!isUserExists.rowCount || isUserExists.rowCount < 1) {
+      return next(errorHandler(400, 'Invalid token or token has expired'));
+    }
+
+    const user: User = isUserExists.rows[0];
+
+    if (user.verify_token_expiry && user.verify_token_expiry < new Date()) {
+      return next(errorHandler(400, 'Invalid token or token has expired'));
+    }
+
+    const updateUser = await db.query(
+      'UPDATE users SET is_verified = $1, is_active = $2 verify_token = $3, verify_token_expiry = $4 WHERE email = $5 AND verify_token = $6 RETURNING id',
+      [true, true, null, null, email, token],
+    );
+    if (!updateUser.rowCount || updateUser.rowCount < 1) {
+      res.status(500).json({
+        message:
+          'We are unable to verify your email right now, please try again later',
+      });
+    }
+    res.status(200).json({ message: 'Email verified successfully' });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const forgetPassword = async (
   req: Request,
   res: Response,

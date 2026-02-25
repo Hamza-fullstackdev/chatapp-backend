@@ -1,0 +1,34 @@
+{
+  "name": "verify-token",
+  "rank": "ay",
+  "request": {
+    "type": "http",
+    "url": "http://localhost:5000/api/v1/auth/verify-email",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "POST",
+    "queryParams": [
+      {
+        "id": 0.39233464277469143,
+        "key": "token",
+        "value": "PDTawKm-Q8zkcPzSxCoRQ",
+        "isEnabled": true
+      },
+      {
+        "id": 0.5347348816223834,
+        "key": "email",
+        "value": "devhamza217@gmail.com",
+        "isEnabled": true
+      }
+    ],
+    "headers": [],
+    "body": "",
+    "contentType": "text/plain",
+    "auth": {
+      "currentAuthType": "INHERIT",
+      "authConfigStore": {}
+    }
+  }
+}
