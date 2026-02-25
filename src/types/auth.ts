@@ -6,6 +6,7 @@ export type User = {
   email: string;
   password: string;
   role: UserRole;
+  profile_img: string;
   is_active: boolean;
   is_verified: boolean;
   verify_token: string | null;
@@ -16,6 +17,9 @@ export type User = {
   updated_at: Date;
 };
 
-export type RegisterInput = Pick<User, 'username' | 'email' | 'password' | 'role'>;
+export type RegisterInput = Pick<
+  User,
+  'username' | 'email' | 'password' | 'role'
+>;
 
 export type LoginInput = Pick<User, 'email' | 'password'>;

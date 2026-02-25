@@ -138,6 +138,7 @@ export const login = async (
         username: user.username,
         email: user.email,
         role: user.role,
+        profile_img: user.profile_img,
         is_verified: user.is_verified,
       },
     });
