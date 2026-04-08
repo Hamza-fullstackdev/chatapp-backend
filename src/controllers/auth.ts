@@ -26,7 +26,7 @@ export const register = async (
     return next(errorHandler(400, errorMessage));
   }
 
-  const { username, email, password, role }: RegisterInput = parsed.data;
+  const { name, username, email, password, role }: RegisterInput = parsed.data;
 
   try {
     const verifyToken = nanoid();
@@ -63,9 +63,17 @@ export const register = async (
     }
 
     await db.query(
-      `INSERT INTO users (username, email, password, role, verify_token, verify_token_expiry) 
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-      [username, email, hashedPassword, role, verifyToken, verifyTokenExpiry],
+      `INSERT INTO users (name, username, email, password, role, verify_token, verify_token_expiry) 
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [
+        name,
+        username,
+        email,
+        hashedPassword,
+        role,
+        verifyToken,
+        verifyTokenExpiry,
+      ],
     );
 
     res.status(201).json({
@@ -74,6 +82,7 @@ export const register = async (
         'Please check your email! We have sent you a verification link. Once you verify your email, you can log in to your account.',
     });
   } catch (error: any) {
+    console.error('Error during registration:', error);
     next(error);
   }
 };
@@ -135,6 +144,7 @@ export const login = async (
       redirect: user.role === 'user' ? '/app' : '/admin/dashboard',
       user: {
         id: user.id,
+        name: user.name,
         username: user.username,
         email: user.email,
         role: user.role,

@@ -2,6 +2,7 @@ export type UserRole = 'admin' | 'user';
 
 export type User = {
   id: number;
+  name: string;
   username: string;
   email: string;
   password: string;
@@ -19,7 +20,7 @@ export type User = {
 
 export type RegisterInput = Pick<
   User,
-  'username' | 'email' | 'password' | 'role'
+  'name' | 'username' | 'email' | 'password' | 'role'
 >;
 
 export type LoginInput = Pick<User, 'email' | 'password'>;
